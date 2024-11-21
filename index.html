@@ -13,7 +13,6 @@
     <!-- CodeMirror CSS and Theme -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/theme/shadowfox.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/hint/show-hint.min.css">
 
     <style>
         body {
@@ -33,56 +32,32 @@
         }
 
         .editor-area {
-            background-color: #f5f5f5;
             border: 2px solid #ddd;
             border-radius: 5px;
             margin-top: 10px;
         }
 
-        .form-select, .btn {
+        .form-select,
+        .btn {
             width: 100%;
         }
 
-        .output-area, .input-area {
+        .output-area,
+        .input-area {
             background-color: #f5f5f5;
             border: 2px solid #ddd;
             border-radius: 5px;
-        }
-
-        .btn-outline-success {
-            margin-top: 10px;
         }
 
         .run-btn {
             background-color: #28a745;
             color: white;
             border: none;
-            font-size: 16px;
             padding: 10px 20px;
         }
 
         .run-btn:hover {
             background-color: #218838;
-        }
-
-        .col-8 {
-            padding-right: 20px;
-        }
-
-        .col-4 {
-            padding-left: 20px;
-        }
-
-        .mb-3 {
-            margin-bottom: 1rem;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .form-label {
-            font-weight: bold;
         }
     </style>
 </head>
@@ -93,102 +68,95 @@
         <div class="row g-3 m-3">
             <div class="col-8 rounded p-2">
                 <div class="editor-container">
-
                     <!-- Dropdown and Run Button -->
                     <div class="d-flex justify-content-between mb-3">
                         <div class="col-5">
-                            <label class="visually-hidden" for="Preference">Preference</label>
-                            <select class="form-select" id="Preference">
-                                <option selected>Choose Language</option>
+                            <label for="languageSelector" class="form-label">Select Language</label>
+                            <select class="form-select" id="languageSelector">
+                                <option value="c++" selected>C++</option>
                                 <option value="java">Java</option>
-                                <option value="c++">C++</option>
                                 <option value="python">Python</option>
                                 <option value="c">C</option>
                                 <option value="c#">C#</option>
-                                <option value="javascript">JavaScript</option> 
                             </select>
                         </div>
-
                         <div class="col-5">
-                            <button type="button" class="btn run-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-                                    <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
-                                </svg> Run
+                            <button type="button" class="btn run-btn" id="run">
+                                Run Code
                             </button>
                         </div>
                     </div>
-
                     <!-- Code editor -->
                     <textarea id="editor" class="form-control mt-3 editor-area" aria-label="Code editor"></textarea>
                 </div>
             </div>
-
             <div class="col-4">
-                <div class="editor-container">
-                    <!-- User Input Area -->
-                    <label for="userInput" class="form-label">User Input</label>
-                    <textarea id="userInput" class="form-control input-area mb-3" placeholder="Enter input here" rows="4"></textarea>
-
-                    <!-- Output Area -->
-                    <label for="output" class="form-label">Output</label>
-                    <textarea id="output" class="form-control output-area mb-3" placeholder="Output will be displayed here" rows="4" readonly></textarea>
+                <div class="mb-3">
+                    <label for="programInput" class="form-label">Input</label>
+                    <textarea class="form-control input-area" id="programInput" rows="4"
+                        placeholder="Enter Input Here"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="programOutput" class="form-label">Output</label>
+                    <textarea class="form-control output-area" id="programOutput" rows="4"
+                        placeholder="Output will appear here" readonly></textarea>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    <!-- CodeMirror JS and Hint Addons -->
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/clike/clike.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/python/python.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/java/java.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/c/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/csharp/csharp.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/javascript/javascript.min.js"></script> <!-- Added JavaScript mode -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/edit/closebrackets.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/edit/closetag.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/hint/show-hint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/hint/anyword-hint.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/python/python.min.js"></script>
     <script>
         // Initialize CodeMirror editor
-        var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
-            mode: "text/x-c++src", // Default to C++ mode
+        const languageSelector = document.getElementById("languageSelector");
+        const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+            mode: "text/x-c++src",
             theme: "shadowfox",
             lineNumbers: true,
-            autoCloseBrackets: true,
-            autoCloseTags: true,
-            extraKeys: {
-                "Ctrl-Space": "autocomplete" // Trigger autocomplete with Ctrl-Space
-            }
         });
-
-        // Set editor size
         editor.setSize("100%", "500px");
 
-        // Language change event listener
-        var option = document.getElementById("Preference");
-        option.addEventListener("change", function () {
-            if (option.value == "c++") {
-                editor.setOption("mode", "text/x-c++src");
-            } else if (option.value == "java") {
-                editor.setOption("mode", "text/x-java");
-            } else if (option.value == "python") {
-                editor.setOption("mode", "text/x-python");
-            } else if (option.value == "c") {
-                editor.setOption("mode", "text/x-csrc");
-            } else if (option.value == "c#") {
-                editor.setOption("mode", "text/x-csharp");
-            } else if (option.value == "javascript") {
-                editor.setOption("mode", "text/javascript");
+        // Update language mode dynamically
+        languageSelector.addEventListener("change", () => {
+            const lang = languageSelector.value;
+            const modeMapping = {
+                "c++": "text/x-c++src",
+                "java": "text/x-java",
+                "python": "text/x-python",
+                "c": "text/x-csrc",
+                "c#": "text/x-csharp",
+            };
+            editor.setOption("mode", modeMapping[lang] || "text/plain");
+        });
+
+        // Run Code Button Click Event
+        document.getElementById("run").addEventListener("click", async () => {
+            const code = editor.getValue();
+            const input = document.getElementById("programInput").value;
+            const lang = languageSelector.value;
+            const outputArea = document.getElementById("programOutput");
+
+            outputArea.value = "Running...";
+            try {
+                const response = await fetch("http://localhost:8000/compile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ code, input, lang }),
+                });
+
+                const result = await response.json();
+                outputArea.value = result.output || result.error || "Unknown error occurred.";
+            } catch (err) {
+                outputArea.value = "Error connecting to the server.";
+                console.error(err);
             }
         });
     </script>
-
 </body>
 
 </html>

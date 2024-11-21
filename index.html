@@ -15,40 +15,124 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/theme/shadowfox.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/hint/show-hint.min.css">
 
+    <style>
+        body {
+            background-color: #f0f4f8;
+            font-family: Arial, sans-serif;
+        }
+
+        .container-fluid {
+            margin-top: 50px;
+        }
+
+        .editor-container {
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .editor-area {
+            background-color: #f5f5f5;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .form-select, .btn {
+            width: 100%;
+        }
+
+        .output-area, .input-area {
+            background-color: #f5f5f5;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn-outline-success {
+            margin-top: 10px;
+        }
+
+        .run-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+
+        .run-btn:hover {
+            background-color: #218838;
+        }
+
+        .col-8 {
+            padding-right: 20px;
+        }
+
+        .col-4 {
+            padding-left: 20px;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="container-fluid">
         <div class="row g-3 m-3">
-            <div class="col">
+            <div class="col-8 rounded p-2">
+                <div class="editor-container">
 
-                <div class="d-flex w-25 justify-space-between">
+                    <!-- Dropdown and Run Button -->
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="col-5">
+                            <label class="visually-hidden" for="Preference">Preference</label>
+                            <select class="form-select" id="Preference">
+                                <option selected>Choose Language</option>
+                                <option value="java">Java</option>
+                                <option value="c++">C++</option>
+                                <option value="python">Python</option>
+                                <option value="c">C</option>
+                                <option value="c#">C#</option>
+                                <option value="javascript">JavaScript</option> <!-- Added JavaScript option -->
+                            </select>
+                        </div>
 
-                    <!-- Choose option with custom width -->
-                    <div class="col" style="width: 150px;">
-                        <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                        <select class="form-select" id="autoSizingSelect">
-                            <option selected>Choose...</option>
-                            <option value="java">Java</option>
-                            <option value="c++">C++</option>
-                            <option value="Python">Python</option>
-                        </select>
+                        <div class="col-5">
+                            <button type="button" class="btn run-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                                    <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
+                                </svg> Run
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Buttons -->
-                    <div>
-                        <button type="button" class="btn btn-outline-success">Execute-></button>
-                        <button type="button" class="btn btn-primary Run">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-                                <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
-                            </svg>
-                        </button>
-                    </div>
+                    <!-- Code editor -->
+                    <textarea id="editor" class="form-control mt-3 editor-area" aria-label="Code editor"></textarea>
                 </div>
-                
-                <!-- Code editor -->
-                <textarea id="editor" class="form-control mt-3" aria-label="Code editor"></textarea>
+            </div>
+
+            <div class="col-4">
+                <div class="editor-container">
+                    <!-- User Input Area -->
+                    <label for="userInput" class="form-label">User Input</label>
+                    <textarea id="userInput" class="form-control input-area mb-3" placeholder="Enter input here" rows="4"></textarea>
+
+                    <!-- Output Area -->
+                    <label for="output" class="form-label">Output</label>
+                    <textarea id="output" class="form-control output-area mb-3" placeholder="Output will be displayed here" rows="4" readonly></textarea>
+                </div>
             </div>
         </div>
     </div>
@@ -60,6 +144,11 @@
     <!-- CodeMirror JS and Hint Addons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/python/python.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/java/java.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/c/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/csharp/csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/mode/javascript/javascript.min.js"></script> <!-- Added JavaScript mode -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/edit/closebrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/edit/closetag.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.8/addon/hint/show-hint.min.js"></script>
@@ -68,7 +157,7 @@
     <script>
         // Initialize CodeMirror editor
         var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
-            mode: "text/x-c++src",
+            mode: "text/x-c++src", // Default to C++ mode
             theme: "shadowfox",
             lineNumbers: true,
             autoCloseBrackets: true,
@@ -79,8 +168,27 @@
         });
 
         // Set editor size
-        editor.setSize("70%", "500px");
+        editor.setSize("100%", "500px");
+
+        // Language change event listener
+        var option = document.getElementById("Preference");
+        option.addEventListener("change", function () {
+            if (option.value == "c++") {
+                editor.setOption("mode", "text/x-c++src");
+            } else if (option.value == "java") {
+                editor.setOption("mode", "text/x-java");
+            } else if (option.value == "python") {
+                editor.setOption("mode", "text/x-python");
+            } else if (option.value == "c") {
+                editor.setOption("mode", "text/x-csrc");
+            } else if (option.value == "c#") {
+                editor.setOption("mode", "text/x-csharp");
+            } else if (option.value == "javascript") {
+                editor.setOption("mode", "text/javascript");
+            }
+        });
     </script>
+
 </body>
 
 </html>

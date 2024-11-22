@@ -46,21 +46,20 @@ app.post("/compile", (req, res) => {
   try {
     let envData;
     switch (lang.toLowerCase()) {
-      case "cpp":
-        console.log("Compiling C++...");
-        envData = { OS: "windows", cmd: "g++", options: { timeout: 10000 } };
-        if (!input) {
-          compiler.compileCPP(envData, codeToCompile, (data) => {
-            console.log("C++ Compilation Result:", data);
-            res.send(data);
-          });
-        } else {
-          compiler.compileCPPWithInput(envData, codeToCompile, input, (data) => {
-            console.log("C++ Compilation Result with Input:", data);
-            res.send(data);
-          });
-        }
-        break;
+      case "c++":
+                envData = { OS: "windows", cmd: "g++", options: { timeout: 10000 } };
+                if (!input) {
+                    compiler.compileCPP(envData, code, (data) => {
+                        console.log("C++ Output:", data);
+                        res.send(data);
+                    });
+                } else {
+                    compiler.compileCPPWithInput(envData, code, input, (data) => {
+                        console.log("C++ Output with Input:", data);
+                        res.send(data);
+                    });
+                }
+                break;
 
       case "java":
         console.log("Compiling Java...");
